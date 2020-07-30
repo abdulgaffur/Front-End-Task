@@ -1,0 +1,147 @@
+<html>
+   <head>
+      <style>
+         button
+         {
+         width: 20%;
+         background-color: red;
+         color: white;
+         padding: 14px 20px;
+         margin: 8px 0;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+         }
+         input {
+         width: 30%;
+         padding: 12px 20px;
+         margin: 8px 0;
+         display: inline-block;
+         border: 1px solid #ccc;
+         border-radius: 4px;
+         box-sizing: border-box;
+         border-radius: 25px;
+         padding: 20px;
+         }
+         div {
+         border-radius: 5px;
+         background-image: linear-gradient(cyan, white);
+         padding: 20px;
+         }
+         h1{
+         color:red;
+         }
+	#highlight{
+		  background-color: #7CFC00 !important;
+
+	}
+
+      </style>
+   </head>
+   <body align="center">
+      <div >
+         <div  id="formid" >
+            <h1>ENTER PINCODE</h1>
+            <input type="number" name="pincode"  id="pin"><br>
+            <button onclick="getPincode()" id="submit" >Submit</button>
+            <br>
+            <br>
+         </div>
+      </div>
+      <div >
+         <table id="details" border="1">
+            <thead>
+               <tr>
+                  <th>Name</th>
+                  <th>Branch Type</th>
+                  <th>Delivery Status</th>
+                  <th>Circle</th>
+                  <th>District</th>
+                  <th>Division</th>
+                  <th>Region</th>
+                  <th>Block</th>
+                  <th>District</th>
+                  <th>State</th>
+                  <th>Country</th>
+               </tr>
+            </thead>
+            <tbody id="data">
+            </tbody>
+         </table>
+      </div>
+   </body>
+   <script>
+      function getPincode(){
+      var x = document.getElementById('pin').value;
+      
+      var y=x.toString().length;
+      if(y!=6)
+      {
+      alert("The PINCODE should be in 6 number format(Example:521245) and should not contain special characters or You have entered an invalid PINCODE!!!");
+      return false;
+      }
+      
+       var url = "https://api.postalpincode.in/pincode/"+x;
+      
+       var request = new XMLHttpRequest();
+      request.open("GET", url, true);
+      request.send();
+      request.onload = () =>{
+      	
+      	if( request.status ===200){
+      		//console.log("http request");
+      		//console.log(JSON.parse(request.response));
+      
+      
+      		if(JSON.parse(request.response).length>0){
+      			var txt="";
+      		JSON.parse(request.response).forEach((pin)=>{
+      
+      			//console.log(pin);
+      	pin.PostOffice.forEach((eachPincode)=>{
+		if(eachPincode.Name == "Pedaogirala"){
+			console.log(eachPincode.Name+"myarea"); 	
+      		txt+="<tr id='highlight'>";
+      		txt+= "<td>"+	(eachPincode.Name).replace("(O)","") + "</td>";
+      		txt+= "<td>"+	eachPincode.BranchType + "</td>";
+      		txt+= "<td>"+	eachPincode.DeliveryStatus + "</td>";
+      		txt+= "<td>"+	eachPincode.Circle + "</td>";
+      		txt+= "<td><span class='spnDetails'>"+	eachPincode.District + "</span><span class='spnTooltip'>This is my area</span></td>";
+      		txt+= "<td>"+	eachPincode.Division + "</td>";
+      		txt+= "<td>"+	eachPincode.Region + "</td>";
+      		txt+= "<td>"+	eachPincode.Block + "</td>";
+      		txt+= "<td>"+	eachPincode.District + "</td>";
+      		txt+= "<td>"+	eachPincode.State + "</td>";
+      		txt+= "<td>"+	eachPincode.Country + "</td>";
+}
+if(eachPincode.Name != "Pedaogirala"){
+				console.log(eachPincode.Name + "Not your area");
+txt+="<tr>";
+      		txt+= "<td>"+	(eachPincode.Name).replace("(O)","") + "</td>";
+      		txt+= "<td>"+	eachPincode.BranchType + "</td>";
+      		txt+= "<td>"+	eachPincode.DeliveryStatus + "</td>";
+      		txt+= "<td>"+	eachPincode.Circle + "</td>";
+      		txt+= "<td>"+	eachPincode.District + "</td>";
+      		txt+= "<td>"+	eachPincode.Division + "</td>";
+      		txt+= "<td>"+	eachPincode.Region + "</td>";
+      		txt+= "<td>"+	eachPincode.Block + "</td>";
+      		txt+= "<td>"+	eachPincode.District + "</td>";
+      		txt+= "<td>"+	eachPincode.State + "</td>";
+      		txt+= "<td>"+	eachPincode.Country + "</td>";
+}
+	
+      		})
+
+      	})
+      							document.getElementById("data").innerHTML = txt;
+      
+      }
+      
+      }
+      else{
+ 		console.log('error ${request.Status} ${request.statusText');
+ }
+      }
+      }
+   </script>
+</html>
