@@ -46,9 +46,9 @@
          border:3px solid black;
          }
          table {
-         width: 100%;
-         max-width: 600px;
-         height: 320px;
+         width: 200%;
+         max-width: 700px;
+         height: 520px;
          border-collapse: collapse;
          border: 1px solid #38678f;
          margin: 50px auto;
@@ -67,7 +67,7 @@
          }
          tr {
          border-bottom: 1px solid #cccccc;
-         border-horizontal:1px solid black;
+         border:1px solid black;
          }
       </style>
    </head>
@@ -110,27 +110,45 @@
       var y=x.toString().length;
       if(y!=6)
       {
-      alert("The PINCODE should be in 6 number format(Example: 521245).");
+      alert("The PINCODE should be in 6 number format (Example: 521245).");
       return false;
       }
+
       
        var url = "https://api.postalpincode.in/pincode/"+x;
       
        var request = new XMLHttpRequest();
       request.open("GET", url, true);
+
       request.send();
+
+	
+     
+     
       request.onload = () =>{
       	
       	if( request.status ===200){
+
+
       		
       
       
       		if(JSON.parse(request.response).length>0){
       			var txt="";
-      		JSON.parse(request.response).forEach((pin)=>{
+ var obj=JSON.parse(request.responseText);
+	alert(request.responseText);
+     
+
+      
+
+  
+      		JSON.parse(request.response).forEach((pin)=>{	
+	
       
       			
       	pin.PostOffice.forEach((eachPincode)=>{
+
+	
       if(eachPincode.Name == "Pedaogirala"){
       console.log(eachPincode.Name+"myarea"); 	
       		txt+="<tr id='highlight'>";
@@ -175,5 +193,7 @@
       }
       }
       }
+
+
    </script>
 </html>
